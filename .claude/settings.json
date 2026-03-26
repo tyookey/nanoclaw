@@ -1,1 +1,61 @@
-{}
+{
+    "permissions": {
+        "allow": [
+            "Read",
+            "Glob",
+            "Grep",
+            "LSP",
+            "WebSearch",
+            "WebFetch",
+
+            "Bash(ls:*)",
+            "Bash(pwd:*)",
+            "Bash(cat:*)",
+            "Bash(head:*)",
+            "Bash(tail:*)",
+            "Bash(find:*)",
+            "Bash(which:*)",
+            "Bash(tree:*)",
+            "Bash(wc:*)",
+            "Bash(file:*)",
+            "Bash(stat:*)",
+            "Bash(echo:*)",
+            "Bash(diff *)",
+
+            "Bash(git status:*)",
+            "Bash(git log:*)",
+            "Bash(git diff:*)",
+
+            "Bash(gh pr view:*)",
+            "Bash(gh pr list:*)",
+            "Bash(gh pr diff:*)",
+            "Bash(gh issue view:*)",
+            "Bash(gh issue list:*)",
+            "Bash(gh api:*)",
+
+            "Bash(npm run dev:*)",
+            "Bash(npm run test:*)",
+
+            "Bash(docker ps:*)",
+            "Bash(docker logs:*)",
+
+            "Bash(systemctl --user status:*)",
+            "Bash(systemctl --user restart:*)",
+            "Bash(journalctl --user:*)",
+
+            "Bash(aws:*)",
+            "Bash(aws *)",
+            "Bash(*aws logs*)",
+            "Bash(*aws cloudwatch*)",
+
+            "Bash(jq:*)",
+            "Bash(*| jq*)",
+            "Bash(*| grep*)",
+            "Bash(*| head*)",
+            "Bash(*| tail*)",
+
+            "Bash(rsync *)",
+            "Bash(cp ~/.claude/*)"
+        ]
+    }
+}

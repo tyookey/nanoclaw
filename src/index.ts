@@ -207,7 +207,27 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
     }, IDLE_TIMEOUT);
   };
 
+  // Refresh typing indicator every 8s (Discord's expires after ~10s).
+  // Stopped as soon as the agent sends its first output or completes.
   await channel.setTyping?.(chatJid, true);
+  let typingInterval: ReturnType<typeof setInterval> | undefined;
+  const startTyping = () => {
+    stopTyping();
+    if (channel.setTyping) {
+      typingInterval = setInterval(
+        () => channel.setTyping!(chatJid, true),
+        8000,
+      );
+    }
+  };
+  const stopTyping = () => {
+    if (typingInterval) {
+      clearInterval(typingInterval);
+      typingInterval = undefined;
+    }
+  };
+  startTyping();
+
   let hadError = false;
   let outputSentToUser = false;
 
@@ -222,6 +242,7 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
       const text = raw.replace(/<internal>[\s\S]*?<\/internal>/g, '').trim();
       logger.info({ group: group.name }, `Agent output: ${raw.length} chars`);
       if (text) {
+        stopTyping();
         await channel.sendMessage(chatJid, text);
         outputSentToUser = true;
       }
@@ -230,6 +251,7 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
     }
 
     if (result.status === 'success') {
+      stopTyping();
       queue.notifyIdle(chatJid);
     }
 
@@ -238,6 +260,7 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
     }
   });
 
+  stopTyping();
   await channel.setTyping?.(chatJid, false);
   if (idleTimer) clearTimeout(idleTimer);
 
